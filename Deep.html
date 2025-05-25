@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<link rel="icon" href="image/a19dbf18-de60-47a6-ae05-032d8e2c4d43.jpg" type="image/png">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💲 Controle-Financeiro  💲</title>
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #f5f7ff;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-bg: #fff;
+            --border-color: #ddd;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+
+        .dark-mode {
+            --primary-color: #6c8eff;
+            --secondary-color: #1a1a2e;
+            --text-color: #f0f0f0;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #444;
+            --success-color: #48c774;
+            --warning-color: #ffdd57;
+            --danger-color: #f14668;
+            --info-color: #3e8ed0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 10px;
+            font-size: 14px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 5px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button.secondary {
+            background-color: var(--border-color);
+        }
+
+        button.danger {
+            background-color: var(--danger-color);
+        }
+
+        button.success {
+            background-color: var(--success-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .status-paid {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .status-unpaid {
+            color: var(--warning-color);
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 3px;
+        }
+
+        .action-buttons button {
+            padding: 5px 8px;
+            font-size: 0.7rem;
+            margin: 0;
+        }
+
+        .summary-card {
+            text-align: center;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 5px 0;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .slide-out {
+            animation: slideOut 0.3s ease-in-out forwards;
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            padding: 10px 15px;
+            background-color: var(--success-color);
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            animation: fadeInOut 3s ease-in-out forwards;
+            z-index: 1000;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            10% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        .alert-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            max-width: 90%;
+            width: 100%;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .alert-box h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .alert-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .alert-buttons button {
+            width: auto;
+            padding: 8px 15px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle circle {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 5;
+            stroke-dasharray: 126;
+            stroke-dashoffset: 126;
+            animation: progress 1s ease-in-out forwards;
+        }
+
+        @keyframes progress {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .progress-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: fadeIn 0.3s 1s ease-in-out forwards;
+            font-size: 1.2rem;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Estilos para tabelas responsivas */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 10px;
+        }
+
+        /* Ajustes para campos de data */
+        input[type="date"] {
+            min-height: 36px;
+        }
+
+        /* Melhorias para dispositivos muito pequenos */
+        @media (max-width: 360px) {
+            body {
+                padding: 5px;
+                font-size: 13px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            button {
+                padding: 7px 10px;
+                font-size: 0.8rem;
+            }
+
+            .summary-value {
+                font-size: 1.3rem;
+            }
+        }
+
+        /* Ajustes para orientação paisagem */
+        @media (orientation: landscape) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>💲 Controle-Financeiro  💲 </h1>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title">Recebimentos</h2>
+                <div class="form-group">
+                    <label for="income-description">Descrição:</label>
+                    <input type="text" id="income-description" placeholder="Salário, Freelance, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="income-value">Valor:</label>
+                    <input type="number" id="income-value" placeholder="R$ 0,00" step="0.01" min="0">
+                </div>
+                <button id="add-income">Adicionar Recebimento</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Descontos</h2>
+                <div class="form-group">
+                    <label for="discount-description">Descrição:</label>
+                    <input type="text" id="discount-description" placeholder="Impostos, Taxas, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="discount-value">Valor:</label>
+                    <input type="number" id="discount-value" placeholder="R$ 0,00" step="0.01" min="0">
+                </div>
+                <button id="add-discount">Adicionar Desconto</button>
+            </div>
+        </div>
+
+        <div class="card summary-card">
+            <h2 class="card-title">Valor Recebido com Desconto</h2>
+            <div class="summary-value" id="net-income">R$ 0,00</div>
+            <div class="status-container" id="net-income-status"></div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title">Recebimentos Registrados</h2>
+                <div class="table-container">
+                    <table id="income-table">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Descontos Registrados</h2>
+                <div class="table-container">
+                    <table id="discount-table">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Pessoas a Pagar</h2>
+            <div class="form-group">
+                <label for="payment-person">Nome:</label>
+                <input type="text" id="payment-person" placeholder="Fornecedor, Funcionário, etc.">
+            </div>
+            <div class="form-group">
+                <label for="payment-description">Descrição:</label>
+                <input type="text" id="payment-description" placeholder="Serviço prestado, etc.">
+            </div>
+            <div class="form-group">
+                <label for="payment-value">Valor:</label>
+                <input type="number" id="payment-value" placeholder="R$ 0,00" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label for="payment-due-date">Vencimento:</label>
+                <input type="date" id="payment-due-date">
+            </div>
+            <div class="form-group">
+                <label for="payment-status">Status:</label>
+                <select id="payment-status">
+                    <option value="unpaid">Não Pago</option>
+                    <option value="paid">Pago</option>
+                </select>
+            </div>
+            <button id="add-payment">Adicionar Pagamento</button>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">Pagamentos Registrados</h2>
+            <div class="table-container">
+                <table id="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Pessoa</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Venc.</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card summary-card">
+                <h2 class="card-title">Total a Pagar 💲</h2>
+                <div class="summary-value" id="total-payments">R$ 0,00</div>
+            </div>
+
+            <div class="card summary-card">
+                <h2 class="card-title">Sobra 🤑</h2>
+                <div class="summary-value" id="remaining-balance">R$ 0,00</div>
+                <div class="status-container" id="balance-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="theme-toggle" id="theme-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+    </div>
+
+    <div class="overlay" id="overlay" style="display: none;"></div>
+
+    <div class="alert-box" id="confirm-box" style="display: none;">
+        <h3>Tem certeza que deseja excluir este registro?</h3>
+        <div class="alert-buttons">
+            <button class="danger" id="confirm-delete">Confirmar Exclusão</button>
+            <button class="secondary" id="cancel-delete">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // Dados iniciais
+        let finances = {
+            incomes: [],
+            discounts: [],
+            payments: []
+        };
+
+        // Elementos do DOM
+        const elements = {
+            // Formulários
+            incomeDescription: document.getElementById('income-description'),
+            incomeValue: document.getElementById('income-value'),
+            discountDescription: document.getElementById('discount-description'),
+            discountValue: document.getElementById('discount-value'),
+            paymentPerson: document.getElementById('payment-person'),
+            paymentDescription: document.getElementById('payment-description'),
+            paymentValue: document.getElementById('payment-value'),
+            paymentDueDate: document.getElementById('payment-due-date'),
+            paymentStatus: document.getElementById('payment-status'),
+
+            // Botões
+            addIncome: document.getElementById('add-income'),
+            addDiscount: document.getElementById('add-discount'),
+            addPayment: document.getElementById('add-payment'),
+            confirmDelete: document.getElementById('confirm-delete'),
+            cancelDelete: document.getElementById('cancel-delete'),
+            themeToggle: document.getElementById('theme-toggle'),
+
+            // Tabelas
+            incomeTable: document.getElementById('income-table').querySelector('tbody'),
+            discountTable: document.getElementById('discount-table').querySelector('tbody'),
+            paymentTable: document.getElementById('payment-table').querySelector('tbody'),
+
+            // Resumos
+            netIncome: document.getElementById('net-income'),
+            netIncomeStatus: document.getElementById('net-income-status'),
+            totalPayments: document.getElementById('total-payments'),
+            remainingBalance: document.getElementById('remaining-balance'),
+            balanceStatus: document.getElementById('balance-status'),
+
+            // Alertas
+            overlay: document.getElementById('overlay'),
+            confirmBox: document.getElementById('confirm-box')
+        };
+
+        // Variáveis de estado
+        let currentDeleteId = null;
+        let currentDeleteType = null;
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            renderAll();
+            setupEventListeners();
+            checkThemePreference();
+            setupReminders();
+
+            // Configurar data mínima para o campo de data
+            const today = new Date().toISOString().split('T')[0];
+            elements.paymentDueDate.min = today;
+        });
+
+        // Carregar dados do localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('financeControl');
+            if (savedData) {
+                finances = JSON.parse(savedData);
+            }
+        }
+
+        // Salvar dados no localStorage
+        function saveData() {
+            localStorage.setItem('financeControl', JSON.stringify(finances));
+            showNotification('Dados salvos com sucesso!');
+        }
+
+        // Configurar listeners de eventos
+        function setupEventListeners() {
+            // Adicionar recebimentos
+            elements.addIncome.addEventListener('click', addIncome);
+            elements.incomeDescription.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') elements.incomeValue.focus();
+            });
+            elements.incomeValue.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addIncome();
+            });
+
+            // Adicionar descontos
+            elements.addDiscount.addEventListener('click', addDiscount);
+            elements.discountDescription.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') elements.discountValue.focus();
+            });
+            elements.discountValue.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addDiscount();
+            });
+
+            // Adicionar pagamentos
+            elements.addPayment.addEventListener('click', addPayment);
+            elements.paymentPerson.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') elements.paymentDescription.focus();
+            });
+            elements.paymentDescription.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') elements.paymentValue.focus();
+            });
+            elements.paymentValue.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') elements.paymentDueDate.focus();
+            });
+            elements.paymentDueDate.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addPayment();
+            });
+
+            // Confirmação de exclusão
+            elements.confirmDelete.addEventListener('click', confirmDelete);
+            elements.cancelDelete.addEventListener('click', cancelDelete);
+
+            // Toggle do tema
+            elements.themeToggle.addEventListener('click', toggleTheme);
+        }
+
+        // Adicionar recebimento
+        function addIncome() {
+            const description = elements.incomeDescription.value.trim();
+            const value = parseFloat(elements.incomeValue.value);
+
+            if (!description || isNaN(value) || value <= 0) {
+                showAlert('Preencha todos os campos corretamente!', 'warning');
+                return;
+            }
+
+            const income = {
+                id: Date.now(),
+                description,
+                value
+            };
+
+            finances.incomes.push(income);
+            renderIncomes();
+            updateSummary();
+            saveData();
+
+            elements.incomeDescription.value = '';
+            elements.incomeValue.value = '';
+            elements.incomeDescription.focus();
+
+            showAlert('Recebimento registrado com sucesso!', 'success');
+            animateAddition('income-table', income.id);
+        }
+
+        // Adicionar desconto
+        function addDiscount() {
+            const description = elements.discountDescription.value.trim();
+            const value = parseFloat(elements.discountValue.value);
+
+            if (!description || isNaN(value) || value <= 0) {
+                showAlert('Preencha todos os campos corretamente!', 'warning');
+                return;
+            }
+
+            const discount = {
+                id: Date.now(),
+                description,
+                value
+            };
+
+            finances.discounts.push(discount);
+            renderDiscounts();
+            updateSummary();
+            saveData();
+
+            elements.discountDescription.value = '';
+            elements.discountValue.value = '';
+            elements.discountDescription.focus();
+
+            showAlert('Desconto registrado com sucesso!', 'success');
+            animateAddition('discount-table', discount.id);
+        }
+
+        // Adicionar pagamento
+        function addPayment() {
+            const person = elements.paymentPerson.value.trim();
+            const description = elements.paymentDescription.value.trim();
+            const value = parseFloat(elements.paymentValue.value);
+            const dueDate = elements.paymentDueDate.value;
+            const status = elements.paymentStatus.value;
+
+            if (!person || !description || isNaN(value) || value <= 0 || !dueDate) {
+                showAlert('Preencha todos os campos corretamente!', 'warning');
+                return;
+            }
+
+            const payment = {
+                id: Date.now(),
+                person,
+                description,
+                value,
+                dueDate,
+                status
+            };
+
+            finances.payments.push(payment);
+            renderPayments();
+            updateSummary();
+            saveData();
+
+            elements.paymentPerson.value = '';
+            elements.paymentDescription.value = '';
+            elements.paymentValue.value = '';
+            elements.paymentDueDate.value = '';
+            elements.paymentStatus.value = 'unpaid';
+            elements.paymentPerson.focus();
+
+            showAlert('Pagamento registrado com sucesso!', 'success');
+            animateAddition('payment-table', payment.id);
+
+            // Verificar se precisa de lembrete
+            checkPaymentReminder(payment);
+        }
+
+        // Renderizar todos os dados
+        function renderAll() {
+            renderIncomes();
+            renderDiscounts();
+            renderPayments();
+            updateSummary();
+        }
+
+        // Renderizar recebimentos
+        function renderIncomes() {
+            elements.incomeTable.innerHTML = '';
+
+            if (finances.incomes.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" style="text-align: center;">Nenhum recebimento registrado</td>';
+                elements.incomeTable.appendChild(row);
+                return;
+            }
+
+            finances.incomes.forEach(income => {
+                const row = document.createElement('tr');
+                row.dataset.id = income.id;
+
+                row.innerHTML = `
+                    <td>${income.description}</td>
+                    <td>R$ ${income.value.toFixed(2)}</td>
+                    <td class="action-buttons">
+                        <button class="secondary edit-income" data-id="${income.id}">Editar</button>
+                        <button class="danger delete-income" data-id="${income.id}">Excluir</button>
+                    </td>
+                `;
+
+                elements.incomeTable.appendChild(row);
+            });
+
+            // Adicionar listeners para os botões de edição e exclusão
+            document.querySelectorAll('.edit-income').forEach(button => {
+                button.addEventListener('click', (e) => editItem('income', e.target.dataset.id));
+            });
+
+            document.querySelectorAll('.delete-income').forEach(button => {
+                button.addEventListener('click', (e) => showDeleteConfirmation('income', e.target.dataset.id));
+            });
+        }
+
+        // Renderizar descontos
+        function renderDiscounts() {
+            elements.discountTable.innerHTML = '';
+
+            if (finances.discounts.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="3" style="text-align: center;">Nenhum desconto registrado</td>';
+                elements.discountTable.appendChild(row);
+                return;
+            }
+
+            finances.discounts.forEach(discount => {
+                const row = document.createElement('tr');
+                row.dataset.id = discount.id;
+
+                row.innerHTML = `
+                    <td>${discount.description}</td>
+                    <td>R$ ${discount.value.toFixed(2)}</td>
+                    <td class="action-buttons">
+                        <button class="secondary edit-discount" data-id="${discount.id}">Editar</button>
+                        <button class="danger delete-discount" data-id="${discount.id}">Excluir</button>
+                    </td>
+                `;
+
+                elements.discountTable.appendChild(row);
+            });
+
+            // Adicionar listeners para os botões de edição e exclusão
+            document.querySelectorAll('.edit-discount').forEach(button => {
+                button.addEventListener('click', (e) => editItem('discount', e.target.dataset.id));
+            });
+
+            document.querySelectorAll('.delete-discount').forEach(button => {
+                button.addEventListener('click', (e) => showDeleteConfirmation('discount', e.target.dataset.id));
+            });
+        }
+
+        // Renderizar pagamentos
+        function renderPayments() {
+            elements.paymentTable.innerHTML = '';
+
+            if (finances.payments.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = '<td colspan="6" style="text-align: center;">Nenhum pagamento registrado</td>';
+                elements.paymentTable.appendChild(row);
+                return;
+            }
+
+            finances.payments.forEach(payment => {
+                const row = document.createElement('tr');
+                row.dataset.id = payment.id;
+
+                const dueDate = new Date(payment.dueDate);
+                const formattedDate = dueDate.toLocaleDateString('pt-BR');
+
+                row.innerHTML = `
+                    <td>${payment.person}</td>
+                    <td>${payment.description}</td>
+                    <td>R$ ${payment.value.toFixed(2)}</td>
+                    <td>${formattedDate}</td>
+                    <td class="${payment.status === 'paid' ? 'status-paid' : 'status-unpaid'}">
+                        ${payment.status === 'paid' ? 'Pago' : 'Não Pago'}
+                    </td>
+                    <td class="action-buttons">
+                        <button class="secondary edit-payment" data-id="${payment.id}">Editar</button>
+                        <button class="danger delete-payment" data-id="${payment.id}">Excluir</button>
+                    </td>
+                `;
+
+                elements.paymentTable.appendChild(row);
+            });
+
+            // Adicionar listeners para os botões de edição e exclusão
+            document.querySelectorAll('.edit-payment').forEach(button => {
+                button.addEventListener('click', (e) => editItem('payment', e.target.dataset.id));
+            });
+
+            document.querySelectorAll('.delete-payment').forEach(button => {
+                button.addEventListener('click', (e) => showDeleteConfirmation('payment', e.target.dataset.id));
+            });
+        }
+
+        // Atualizar resumo
+        function updateSummary() {
+            // Calcular total de recebimentos
+            const totalIncomes = finances.incomes.reduce((sum, income) => sum + income.value, 0);
+
+            // Calcular total de descontos
+            const totalDiscounts = finances.discounts.reduce((sum, discount) => sum + discount.value, 0);
+
+            // Calcular valor líquido
+            const netIncome = totalIncomes - totalDiscounts;
+            elements.netIncome.textContent = `R$ ${netIncome.toFixed(2)}`;
+
+            // Atualizar status do valor líquido
+            elements.netIncomeStatus.innerHTML = '';
+            if (netIncome < 0) {
+                elements.netIncomeStatus.innerHTML = '<span style="color: var(--danger-color); font-size: 0.9rem;">Atenção: Saldo negativo!</span>';
+            }
+
+            // Calcular total a pagar
+            const totalPayments = finances.payments.reduce((sum, payment) => {
+                return payment.status === 'paid' ? sum : sum + payment.value;
+            }, 0);
+            elements.totalPayments.textContent = `R$ ${totalPayments.toFixed(2)}`;
+
+            // Calcular saldo restante
+            const remainingBalance = netIncome - totalPayments;
+            elements.remainingBalance.textContent = `R$ ${remainingBalance.toFixed(2)}`;
+
+            // Atualizar status do saldo
+            elements.balanceStatus.innerHTML = '';
+            if (remainingBalance < 0) {
+                elements.balanceStatus.innerHTML = '<span style="color: var(--danger-color); font-size: 0.9rem;">Atenção: Saldo insuficiente!</span>';
+            } else if (remainingBalance === 0) {
+                elements.balanceStatus.innerHTML = '<span style="color: var(--warning-color); font-size: 0.9rem;">Saldo zerado</span>';
+            } else if (remainingBalance > 0 && remainingBalance < totalPayments) {
+                elements.balanceStatus.innerHTML = '<span style="color: var(--warning-color); font-size: 0.9rem;">Saldo positivo, mas cuidado com os pagamentos pendentes</span>';
+            } else if (remainingBalance >= totalPayments) {
+                elements.balanceStatus.innerHTML = '<span style="color: var(--success-color); font-size: 0.9rem;">Saldo suficiente para cobrir os pagamentos</span>';
+            }
+        }
+
+        // Mostrar confirmação de exclusão
+        function showDeleteConfirmation(type, id) {
+            currentDeleteId = id;
+            currentDeleteType = type;
+            elements.overlay.style.display = 'block';
+            elements.confirmBox.style.display = 'block';
+        }
+
+        // Confirmar exclusão
+        function confirmDelete() {
+            if (currentDeleteType && currentDeleteId) {
+                const index = finances[currentDeleteType + 's'].findIndex(item => item.id == currentDeleteId);
+                if (index !== -1) {
+                    // Animar a remoção
+                    const row = document.querySelector(`[data-id="${currentDeleteId}"]`);
+                    if (row) {
+                        row.classList.add('slide-out');
+                        setTimeout(() => {
+                            finances[currentDeleteType + 's'].splice(index, 1);
+                            renderAll();
+                            saveData();
+                            showNotification('Registro excluído com sucesso!');
+                        }, 300);
+                    }
+                }
+            }
+            cancelDelete();
+        }
+
+        // Cancelar exclusão
+        function cancelDelete() {
+            currentDeleteId = null;
+            currentDeleteType = null;
+            elements.overlay.style.display = 'none';
+            elements.confirmBox.style.display = 'none';
+        }
+
+        // Editar item
+        function editItem(type, id) {
+            const item = finances[type + 's'].find(item => item.id == id);
+            if (!item) return;
+
+            if (type === 'income') {
+                elements.incomeDescription.value = item.description;
+                elements.incomeValue.value = item.value;
+
+                // Remover o item para edição
+                const index = finances.incomes.findIndex(i => i.id == id);
+                if (index !== -1) {
+                    finances.incomes.splice(index, 1);
+                }
+
+                // Focar no campo de descrição
+                elements.incomeDescription.focus();
+            } else if (type === 'discount') {
+                elements.discountDescription.value = item.description;
+                elements.discountValue.value = item.value;
+
+                // Remover o item para edição
+                const index = finances.discounts.findIndex(i => i.id == id);
+                if (index !== -1) {
+                    finances.discounts.splice(index, 1);
+                }
+
+                // Focar no campo de descrição
+                elements.discountDescription.focus();
+            } else if (type === 'payment') {
+                elements.paymentPerson.value = item.person;
+                elements.paymentDescription.value = item.description;
+                elements.paymentValue.value = item.value;
+                elements.paymentDueDate.value = item.dueDate;
+                elements.paymentStatus.value = item.status;
+
+                // Remover o item para edição
+                const index = finances.payments.findIndex(i => i.id == id);
+                if (index !== -1) {
+                    finances.payments.splice(index, 1);
+                }
+
+                // Focar no campo de pessoa
+                elements.paymentPerson.focus();
+            }
+
+            renderAll();
+            showAlert('Preencha os campos e adicione novamente para atualizar.', 'info');
+        }
+
+        // Mostrar notificação
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Mostrar alerta
+        function showAlert(message, type) {
+            const alertBox = document.createElement('div');
+            alertBox.className = `alert-box ${type}`;
+            alertBox.innerHTML = `
+                <h3>${type === 'warning' ? 'Atenção' : type === 'success' ? 'Sucesso' : 'Informação'}</h3>
+                <p>${message}</p>
+                <div class="progress-circle">
+                    <svg viewBox="0 0 36 36">
+                        <circle cx="18" cy="18" r="16"></circle>
+                    </svg>
+                    <div class="progress-icon">
+                        ${type === 'success' ? '✓' : type === 'warning' ? '⚠' : 'i'}
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.remove();
+            }, 3000);
+        }
+
+        // Animar adição de item
+        function animateAddition(tableId, itemId) {
+            const row = document.querySelector(`#${tableId} [data-id="${itemId}"]`);
+            if (row) {
+                row.classList.add('pulse');
+                setTimeout(() => {
+                    row.classList.remove('pulse');
+                }, 500);
+            }
+        }
+
+        // Alternar tema
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            elements.themeToggle.classList.add('pulse');
+            setTimeout(() => {
+                elements.themeToggle.classList.remove('pulse');
+            }, 500);
+        }
+
+        // Verificar preferência de tema
+        function checkThemePreference() {
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Configurar lembretes
+        function setupReminders() {
+            // Verificar pagamentos pendentes com vencimento próximo
+            const today = new Date();
+            const nextWeek = new Date(today);
+            nextWeek.setDate(today.getDate() + 7);
+
+            const upcomingPayments = finances.payments.filter(payment => {
+                if (payment.status === 'paid') return false;
+
+                const dueDate = new Date(payment.dueDate);
+                return dueDate >= today && dueDate <= nextWeek;
+            });
+
+            if (upcomingPayments.length > 0) {
+                const paymentList = upcomingPayments.map(p => `- ${p.person}: R$ ${p.value.toFixed(2)} (vencimento ${new Date(p.dueDate).toLocaleDateString('pt-BR')})`).join('\n');
+                setTimeout(() => {
+                    showAlert(`Você tem pagamentos pendentes com vencimento próximo:\n${paymentList}`, 'warning');
+                }, 2000);
+            }
+        }
+
+        // Verificar lembrete para um pagamento específico
+        function checkPaymentReminder(payment) {
+            if (payment.status === 'paid') return;
+
+            const dueDate = new Date(payment.dueDate);
+            const today = new Date();
+            const timeDiff = dueDate.getTime() - today.getTime();
+            const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+            if (daysDiff <= 3) {
+                setTimeout(() => {
+                    showAlert(`Lembrete: Pagamento para ${payment.person} no valor de R$ ${payment.value.toFixed(2)} vence em ${daysDiff} ${daysDiff === 1 ? 'dia' : 'dias'}!`, 'warning');
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+
+</html>
