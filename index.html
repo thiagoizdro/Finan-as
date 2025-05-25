@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <link rel="icon" href="image/a19dbf18-de60-47a6-ae05-032d8e2c4d43.jpg" type="image/png">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>💲 Controle-Financeiro  💲</title>
+    <title>💲 Controle-Financeiro 💲</title>
     <style>
         :root {
             --primary-color: #4a6bff;
@@ -424,7 +425,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>💲 Controle-Financeiro  💲 </h1>
+            <h1>💲 Controle-Financeiro 💲 </h1>
         </header>
 
         <div class="grid">
@@ -978,23 +979,63 @@
 
         // Confirmar exclusão
         function confirmDelete() {
-            if (currentDeleteType && currentDeleteId) {
-                const index = finances[currentDeleteType + 's'].findIndex(item => item.id == currentDeleteId);
-                if (index !== -1) {
-                    // Animar a remoção
-                    const row = document.querySelector(`[data-id="${currentDeleteId}"]`);
-                    if (row) {
-                        row.classList.add('slide-out');
-                        setTimeout(() => {
-                            finances[currentDeleteType + 's'].splice(index, 1);
+            try {
+                // Verifica se temos os dados necessários para a exclusão
+                if (!currentDeleteType || !currentDeleteId) {
+                    console.error('Tipo ou ID de exclusão não definido');
+                    cancelDelete();
+                    return;
+                }
+
+                // Verifica se o array alvo existe na estrutura finances
+                const targetArrayName = currentDeleteType + 's';
+                if (!finances[targetArrayName] || !Array.isArray(finances[targetArrayName])) {
+                    console.error('Array de dados não encontrado:', targetArrayName);
+                    cancelDelete();
+                    return;
+                }
+
+                // Encontra o índice do item a ser removido
+                const index = finances[targetArrayName].findIndex(item => item.id == currentDeleteId);
+                if (index === -1) {
+                    console.error('Item não encontrado para exclusão');
+                    cancelDelete();
+                    return;
+                }
+
+                // Animação de remoção
+                const row = document.querySelector(`[data-id="${currentDeleteId}"]`);
+                if (row) {
+                    row.classList.add('slide-out');
+
+                    // Processa a remoção após a animação
+                    setTimeout(() => {
+                        try {
+                            // Remove o item do array
+                            finances[targetArrayName].splice(index, 1);
+
+                            // Atualiza a interface e salva os dados
                             renderAll();
                             saveData();
                             showNotification('Registro excluído com sucesso!');
-                        }, 300);
-                    }
+                        } catch (error) {
+                            console.error('Erro durante a exclusão:', error);
+                            showAlert('Ocorreu um erro ao excluir o registro', 'danger');
+                        }
+                    }, 300);
+                } else {
+                    // Caso a linha não seja encontrada, faz a exclusão sem animação
+                    finances[targetArrayName].splice(index, 1);
+                    renderAll();
+                    saveData();
+                    showNotification('Registro excluído com sucesso!');
                 }
+            } catch (error) {
+                console.error('Erro na função confirmDelete:', error);
+                showAlert('Ocorreu um erro ao processar a exclusão', 'danger');
+            } finally {
+                cancelDelete();
             }
-            cancelDelete();
         }
 
         // Cancelar exclusão
